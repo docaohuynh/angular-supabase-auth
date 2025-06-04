@@ -1,0 +1,38 @@
+
+<router-outlet />
+@if (!this.supabaseAuth.authState$()) {
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label>Username</label>
+      <input formControlName="username" />
+    </div>
+    <div>
+      <label>Password</label>
+      <input type="password" formControlName="password" />
+    </div>
+
+    <button type="submit" [disabled]="isLoading()">Login</button>
+
+    @if (loginError()){
+      <p style="color: red;">{{ loginError() }}</p>
+    }
+  </form>
+} @else {
+    <h2>Welcome! You are logged in.</h2>
+    
+}
+
+<div>
+    <button (click)="getTodo()">Get Todo</button>
+    </div>
+    @if (dataLoading()) {
+      <p>Loading...</p>
+    } @else {
+      <ul>
+        @for (item of data(); track item.task) {
+          <li>{{ item.task }}</li>
+          } @empty {
+          <li>There are no items.</li>
+          }
+      </ul>
+    }
